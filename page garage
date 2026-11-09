@@ -1,0 +1,4 @@
+# Dans Git Bash (ou terminal VS Code)
+git add garage.html
+git commit -m "Ajout page de vente garage automobile"
+git push origin ajout-page-garde
