@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garages — Burkus Consult | Vos clients vous trouvent enfin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #ff7a1a;
+      --orange-light: #ff9a4d;
+      --orange-dark: #e06b12;
+      --bleu-sombre: #0a1929;
+      --bleu-moyen: #132536;
+      --bleu-clair: #1c3a4f;
+      --texte-principal: #f0f4f8;
+      --texte-secondaire: #a0b4c8;
+      --arriere-plan: #080f17;
+      --carte: rgba(19, 37, 54, 0.6);
+      --bordure: rgba(255, 122, 26, 0.15);
+      --erreur: #ff4444;
+      --succes: #00c853;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--arriere-plan);
+      color: var(--texte-principal);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulseOrange {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 122, 26, 0.4); }
+      50% { box-shadow: 0 0 0 15px rgba(255, 122, 26, 0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .animate-fade { animation: fadeInUp 1s ease forwards; opacity: 0; }
+    .animate-scale { animation: fadeInScale 0.8s ease forwards; opacity: 0; }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+
+    /* ========== HEADER / NAV ========== */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(8, 15, 23, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--bordure);
+      padding: 1rem 5%;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--orange);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span { color: var(--texte-principal); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--texte-secondaire);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a:hover { color: var(--orange); }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--orange);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ========== HERO ========== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 5% 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: 
+        radial-gradient(ellipse at 20% 50%, rgba(255, 122, 26, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(26, 100, 180, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255, 122, 26, 0.12);
+      border: 1px solid rgba(255, 122, 26, 0.25);
+      color: var(--orange-light);
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.6s ease;
+    }
+
+    .hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      max-width: 900px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--orange), #ff9a4d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sous-titre {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--texte-secondaire);
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-urgence {
+      background: rgba(255, 122, 26, 0.1);
+      border: 1px solid rgba(255, 122, 26, 0.2);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      font-size: 1.05rem;
+      color: var(--texte-principal);
+      line-height: 1.6;
+    }
+
+    .hero-urgence strong { color: var(--orange-light); }
+
+    /* ========== BOUTONS ========== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-orange {
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: white;
+      box-shadow: 0 4px 20px rgba(255, 122, 26, 0.3);
+    }
+
+    .btn-orange:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(255, 122, 26, 0.4);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: var(--texte-principal);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ========== OBJECTIONS / RÉPONSES ========== */
+    .objections {
+      padding: 80px 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-header h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 1rem;
+    }
+
+    .section-header h2 span { color: var(--orange); }
+
+    .section-header p {
+      color: var(--texte-secondaire);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .obj-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .obj-carte {
+      background: var(--carte);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--bordure);
+      border-radius: 20px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .obj-carte::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--orange), transparent);
+    }
+
+    .obj-carte:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .obj-question {
+      font-size: 0.9rem;
+      color: #ff6b6b;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .obj-carte h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--orange-light);
+    }
+
+    .obj-carte p {
+      color: var(--texte-secondaire);
+      line-height: 1.7;
+    }
+
+    .obj-carte .check {
+      color: var(--succes);
+      font-weight: 700;
+    }
+
+    /* ========== AVANTAGES / FONCTIONNALITÉS ========== */
+    .avantages {
+      padding: 80px 5%;
+      background: linear-gradient(180deg, transparent, rgba(255, 122, 26, 0.03), transparent);
+    }
+
+    .avantages-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .av-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .av-carte {
+      background: rgba(19, 37, 54, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .av-carte:hover {
+      border-color: rgba(255, 122, 26, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .av-icone {
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 122, 26, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .av-carte h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .av-carte p {
+      color: var(--texte-secondaire);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ========== CAS CLIENT / TÉMOIGNAGE ========== */
+    .temoignage {
+      padding: 80px 5%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .temoignage-carte {
+      background: linear-gradient(135deg, rgba(255, 122, 26, 0.1), rgba(26, 100, 180, 0.05));
+      border: 1px solid var(--bordure);
+      border-radius: 24px;
+      padding: 3rem;
+      position: relative;
+    }
+
+    .temoignage-carte::before {
+      content: '"';
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      font-size: 6rem;
+      color: rgba(255, 122, 26, 0.2);
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+
+    .temoignage-texte {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      padding-left: 1rem;
+      color: var(--texte-principal);
+    }
+
+    .temoignage-auteur {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .temoignage-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), #1f6feb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+    }
+
+    .temoignage-info strong {
+      display: block;
+      color: var(--texte-principal);
+    }
+
+    .temoignage-info span {
+      color: var(--texte-secondaire);
+      font-size: 0.9rem;
+    }
+
+    /* ========== OFFRE / PRIX ========== */
+    .offre {
+      padding: 80px 5%;
+      text-align: center;
+    }
+
+    .offre-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .offre-badge {
+      display: inline-block;
+      background: rgba(0, 200, 83, 0.1);
+      border: 1px solid rgba(0, 200, 83, 0.3);
+      color: var(--succes);
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    .offre h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 1rem;
+    }
+
+    .offre-prix {
+      font-size: 4rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      color: var(--orange);
+      margin: 1rem 0;
+    }
+
+    .offre-prix span {
+      font-size: 1rem;
+      color: var(--texte-secondaire);
+      font-weight: 400;
+      vertical-align: middle;
+    }
+
+    .offre-details {
+      background: var(--carte);
+      border: 1px solid var(--bordure);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 2rem 0;
+      text-align: left;
+    }
+
+    .offre-details li {
+      list-style: none;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .offre-details li:last-child { border-bottom: none; }
+
+    .offre-details .check {
+      color: var(--succes);
+      font-weight: 700;
+      min-width: 24px;
+    }
+
+    .offre-garantie {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(0, 200, 83, 0.05);
+      border-radius: 12px;
+      color: var(--texte-secondaire);
+    }
+
+    .offre-garantie strong { color: var(--succes); }
+
+    /* ========== FORMULAIRE RDV ========== */
+    .rdv {
+      padding: 80px 5%;
+      background: linear-gradient(180deg, transparent, rgba(255, 122, 26, 0.05));
+    }
+
+    .rdv-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .rdv h2 {
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .rdv > .rdv-container > p {
+      text-align: center;
+      color: var(--texte-secondaire);
+      margin-bottom: 2rem;
+    }
+
+    #form-rdv {
+      background: var(--carte);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--bordure);
+      border-radius: 20px;
+      padding: 2.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: rgba(10, 25, 41, 0.8);
+      color: var(--texte-principal);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(255, 122, 26, 0.1);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* ========== MESSAGE DE REMERCIEMENT ========== */
+    #merci {
+      display: none;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    #merci h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    #merci h2 span { color: var(--succes); }
+
+    #merci p {
+      color: var(--texte-secondaire);
+      font-size: 1.1rem;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      padding: 3rem 5%;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--texte-secondaire);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--orange);
+      text-decoration: none;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      
+      .hero { padding-top: 100px; }
+      
+      .btn-group {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .obj-grid,
+      .av-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .offre-prix { font-size: 3rem; }
+      
+      #form-rdv { padding: 1.5rem; }
+    }
+
+    /* ========== UTILITAIRES ========== */
+    .highlight-orange {
+      background: linear-gradient(135deg, var(--orange), #ff9a4d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .pulse {
+      animation: pulseOrange 2s infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAV ========== -->
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">Burkus<span>Consult</span></a>
+      <ul class="nav-links">
+        <li><a href="#objections">Vos blocages</a></li>
+        <li><a href="#avantages">Solutions</a></li>
+        <li><a href="#offre">L'offre</a></li>
+        <li><a href="#rdv">Prendre RDV</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div>
+      <div class="hero-badge animate-fade">Spécial Garages Indépendants</div>
+      <h1 class="animate-fade delay-100">
+        Votre garage existe.<br>
+        <span>Mais Google ne le sait pas.</span>
+      </h1>
+      <p class="hero-sous-titre animate-fade delay-200">
+        Vous réparez des voitures à merveille. Mais quand un nouveau client cherche 
+        <em>"garage près de chez moi"</em>, c'est votre concurrent qui apparaît. 
+        Pas vous.
+      </p>
+      <div class="hero-urgence animate-fade delay-300">
+        <strong>💡 La vérité :</strong> Votre logiciel de marque gère vos clients <em>une fois qu'ils sont là</em>. 
+        Mais il ne les <strong>fait pas venir</strong>. Moi, je répare ça. En 30 minutes, gratuitement.
+      </div>
+      <div class="btn-group animate-fade delay-400">
+        <a href="#rdv" class="btn btn-orange pulse">📅 Voir si mon garage est concerné</a>
+        <a href="#objections" class="btn btn-ghost">J'ai déjà un logiciel →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== OBJECTIONS ========== -->
+  <section class="objections" id="objections">
+    <div class="section-header animate-fade">
+      <h2>"J'ai déjà un <span>système</span>..."</h2>
+      <p>Les 3 phrases que tous les garages me disent. Et pourquoi elles ne sont pas un blocage.</p>
+    </div>
+    
+    <div class="obj-grid">
+      <div class="obj-carte animate-fade delay-100">
+        <div class="obj-question">❝ J'ai un logiciel de la marque ❞</div>
+        <h3>Parfait. Gardez-le.</h3>
+        <p>Je ne vous demande pas de changer votre outil de facturation. Votre logiciel gère vos <strong>clients actuels</strong>. Moi, je vous en <span class="check">fais arriver de nouveaux</span> via Google, même la nuit.</p>
+      </div>
+      
+      <div class="obj-carte animate-fade delay-200">
+        <div class="obj-question">❝ Mes données clients sont dedans ❞</div>
+        <h3>C'est exactement le risque.</h3>
+        <p>Et si demain vous quittez la marque ? Vos <strong>données ne vous appartiennent pas</strong>. Je vous crée un <span class="check">fichier client indépendant</span> — portable, exportable, à vous pour toujours.</p>
+      </div>
+      
+      <div class="obj-carte animate-fade delay-300">
+        <div class="obj-question">❝ Ça coûte trop cher ❞</div>
+        <h3>Combien coûte un client perdu ?</h3>
+        <p>Un client qui appelle, n'obtient pas de réponse, et va chez le voisin = <strong>300-800€ perdus</strong>. Mon pack coûte moins cher qu'un seul client manqué par mois. <span class="check">Et vous ne payez que si ça marche.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== AVANTAGES ========== -->
+  <section class="avantages" id="avantages">
+    <div class="avantages-container">
+      <div class="section-header animate-fade">
+        <h2>Ce que je mets en place <span>pour vous</span></h2>
+        <p>Un pack complet pensé pour les garagistes qui veulent du concret, pas du blabla.</p>
+      </div>
+      
+      <div class="av-grid">
+        <div class="av-carte animate-fade delay-100">
+          <div class="av-icone">🌐</div>
+          <h3>Site vitrine + Prise de RDV</h3>
+          <p>Votre garage visible sur Google. Vos clients réservent en ligne, même à 23h. Vous trouvez vos messages le lendemain matin, organisés.</p>
+        </div>
+        
+        <div class="av-carte animate-fade delay-200">
+          <div class="av-icone">📋</div>
+          <h3>Fiches clients intelligentes</h3>
+          <p>Chaque véhicule, chaque intervention, chaque date de contrôle technique — retrouvé en 2 secondes. Plus de papier qui s'égare.</p>
+        </div>
+        
+        <div class="av-carte animate-fade delay-300">
+          <div class="av-icone">🔔</div>
+          <h3>Relances automatiques</h3>
+          <p>"Votre contrôle technique est dans 2 mois" — envoyé automatiquement. Vos clients reviennent sans que vous y pensiez.</p>
+        </div>
+        
+        <div class="av-carte animate-fade delay-100">
+          <div class="av-icone">⭐</div>
+          <h3>Avis Google boostés</h3>
+          <p>80% des gens lisent les avis avant de choisir un garage. Je systématise la collecte d'avis positifs. Votre réputation monte.</p>
+        </div>
+        
+        <div class="av-carte animate-fade delay-200">
+          <div class="av-icone">📦</div>
+          <h3>Alertes stock simplifiées</h3>
+          <p>Vous saurez avant la rupture que vos plaquettes de frein sont bientôt épuisées. Un clic pour commander. Pas de client mécontent.</p>
+        </div>
+        
+        <div class="av-carte animate-fade delay-300">
+          <div class="av-icone">📊</div>
+          <h3>Tableau de bord clair</h3>
+          <p>Combien de RDV ce mois ? Quels clients n'ont pas repris depuis 6 mois ? Tout en un coup d'œil. Pas de formation compliquée.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TÉMOIGNAGE ========== -->
+  <section class="temoignage">
+    <div class="temoignage-carte animate-fade">
+      <p class="temoignage-texte">
+        Les pages sont très bien réalisées, l'idée est géniale. Mon conseil : 
+        mettez en valeur le marketing, c'est ça qui fera la différence pour les garages.
+      </p>
+      <div class="temoignage-auteur">
+        <div class="temoignage-avatar">GB</div>
+        <div class="temoignage-info">
+          <strong>Monsieur Brochet</strong>
+          <span>Garage automobile — Ille-et-Vilaine</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== OFFRE ========== -->
+  <section class="offre" id="offre">
+    <div class="offre-container animate-fade">
+      <div class="offre-badge">✓ Offre de lancement</div>
+      <h2>Le Pack <span class="highlight-orange">Garage Pro</span></h2>
+      <div class="offre-prix">299€ <span>/mois</span></div>
+      <p style="color: var(--texte-secondaire); margin-bottom: 2rem;">
+        Ou <strong>0€</strong> à la mise en place si on partage les résultats ensemble (partenariat)
+      </p>
+      
+      <ul class="offre-details">
+        <li><span class="check">✓</span> Site vitrine optimisé Google + prise de RDV en ligne</li>
+        <li><span class="check">✓</span> CRM clients & véhicules (accès à vie, portable)</li>
+        <li><span class="check">✓</span> Système de relances automatiques (entretien, CT, etc.)</li>
+        <li><span class="check">✓</span> Collecte avis Google + réponses aux avis négatifs</li>
+        <li><span class="check">✓</span> Tableau de bord simple (pas de formation jours)</li>
+        <li><span class="check">✓</span> Support WhatsApp réactif</li>
+        <li><span class="check">✓</span> <strong>Mise en place incluse</strong> — vous ne touchez rien</li>
+      </ul>
+      
+      <div class="offre-garantie">
+        <strong>🛡 Garantie "Rentable ou Remboursé"</strong><br>
+        Si dans 90 jours vous n'avez pas gagné au moins 3 nouveaux clients grâce à moi, 
+        je vous rembourse intégralement. Sans discussion.
+      </div>
+      
+      <br>
+      <a href="#rdv" class="btn btn-orange pulse" style="margin-top: 1rem;">
+        🚀 Je veux que mon garage soit visible
+      </a>
+    </div>
+  </section>
+
+  <!-- ========== FORMULAIRE RDV ========== -->
+  <section class="rdv" id="rdv">
+    <div class="rdv-container">
+      <h2 class="animate-fade">30 minutes ensemble</h2>
+      <p class="animate-fade delay-100">Gratuit. Sans engagement. Vous repartez avec au moins 3 économies concrètes.</p>
+      
+      <form id="form-rdv" action="https://formspree.io/f/https://formspree.io/f/xqppogel" method="POST" class="animate-fade delay-200">
+        <div class="form-group">
+          <label for="nom">Nom du garage *</label>
+          <input type="text" id="nom" name="nom" placeholder="Garage Martin" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="gerant">Nom du gérant *</label>
+          <input type="text" id="gerant" name="gerant" placeholder="Jean Martin" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="telephone">Téléphone *</label>
+          <input type="tel" id="telephone" name="telephone" placeholder="06 12 34 56 78" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email (optionnel)</label>
+          <input type="email" id="email" name="email" placeholder="garage@exemple.fr">
+        </div>
+        
+        <div class="form-group">
+          <label for="logiciel">Logiciel actuel</label>
+          <select id="logiciel" name="logiciel">
+            <option value="">-- Sélectionnez --</option>
+            <option value="marque">Logiciel de la marque (constructeur)</option>
+            <option value="independant">Logiciel indépendant</option>
+            <option value="excel">Excel / Papier</option>
+            <option value="aucun">Aucun / Pas sûr</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="probleme">Votre plus grosse frustration actuelle ?</label>
+          <textarea id="probleme" name="probleme" placeholder="Ex: Les clients appellent quand je suis déjà sur une voiture, je n'ai pas le temps de répondre..."></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-orange" style="width: 100%; justify-content: center;">
+          📅 Réserver mon diagnostic gratuit
+        </button>
+        
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--texte-secondaire);">
+          🔒 Aucune donnée partagée avec des tiers. Je vous rappelle dans la journée.
+        </p>
+      </form>
+      
+      <div id="merci">
+        <h2><span>✅</span> C'est noté !</h2>
+        <p>Je vous rappelle dans la journée pour confirmer le créneau.<br>À très vite.</p>
+        <br>
+        <a href="index.html" class="btn btn-ghost">← Retour à l'accueil</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <p>
+      <strong style="color: var(--texte-principal);">Burkus Consult</strong> — Je réduis vos coûts, vous ne payez que sur les résultats.<br>
+      Site + CRM + Digital sur mesure pour les garages qui veulent du simple et du performant.<br><br>
+      <a href="tel:06.04.11.71.31">📞 Ton numéro</a> · 
+      <a href="mailto:sebastienburkus02@gmail.com">✉️ Ton email</a>
+    </p>
+  </footer>
+
+  <script>
+    // ========== FORMULAIRE ==========
+    document.getElementById('form-rdv').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Envoi Formspree
+      fetch(this.action, {
+        method: 'POST',
+        body: new FormData(this),
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(() => {
+        // Feedback succès
+        this.style.display = 'none';
+        document.getElementById('merci').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('merci').offsetTop - 100, behavior: 'smooth' });
+      })
+      .catch(err => {
+        alert('Erreur d\'envoi. Je suis joignable directement au téléphone !');
+      });
+    });
+
+    // ========== ANIMATION AU SCROLL ==========
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+          entry.target.style.opacity = '1';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.animate-fade, .animate-scale').forEach(el => {
+      el.style.opacity = '0';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
